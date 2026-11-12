@@ -13,7 +13,14 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
+      - name: android sdk
+        run: |
+          SDK=/usr/local/lib/android/sdk
+          echo "ANDROID_SDK_ROOT=$SDK" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$SDK" >> $GITHUB_ENV
+          echo "$SDK/cmdline-tools/latest/bin" >> $GITHUB_PATH
+          yes | $SDK/cmdline-tools/latest/bin/sdkmanager --licenses >/dev/null 2>&1 || true
+          $SDK/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0" >/dev/null
       - name: keystore
         env:
           KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
@@ -22,6 +29,7 @@ jobs:
           mkdir -p keystore
           echo "$KEYSTORE_B64" | base64 -d > keystore/githup-release.jks
           printf '%s' "$KEYSTORE_PASSWORD" > keystore/pass.txt
+          ls -l keystore
       - name: build
         run: |
           chmod +x gradlew
