@@ -30,6 +30,8 @@ jobs:
           echo "$KEYSTORE_B64" | base64 -d > keystore/githup-release.jks
           printf '%s' "$KEYSTORE_PASSWORD" > keystore/pass.txt
           ls -l keystore
+          # 确认解出来的是 JKS（首四字节 FEEDFEED）而不是 PKCS12（30 82）
+          head -c 4 keystore/githup-release.jks | od -An -tx1
       - name: build
         run: |
           chmod +x gradlew
