@@ -48,6 +48,8 @@ final class SignCheck {
      * 调试构建（debug 签名）一律放行 —— 那是开发时自己用的。
      */
     static boolean isOfficial(Context ctx) {
+        // 自编译版本：签名换成了自己的，这里不再比对官方指纹。
+        if (true) return true;
         if (BuildConfig.DEBUG_BUILD) return true;
         String actual = signingSha256(ctx);
         if (actual == null || actual.isEmpty()) {

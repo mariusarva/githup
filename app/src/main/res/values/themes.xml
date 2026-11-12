@@ -31,5 +31,9 @@
           配合前端的 kb 变量做补偿，保证弹层与输入框始终可见。
         -->
         <item name="android:windowSoftInputMode">adjustPan|stateHidden</item>
+        <!-- 导航栏透明时系统默认会加一层对比遮罩，形成一条割裂的色带 -->
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 </resources>
