@@ -31,6 +31,11 @@
           配合前端的 kb 变量做补偿，保证弹层与输入框始终可见。
         -->
         <item name="android:windowSoftInputMode">adjustPan|stateHidden</item>
+        <!-- 底部沉浸：导航栏透明时系统默认会加一层对比遮罩，形成一条割裂的色带，
+             这里关掉；窗口自己画系统栏背景，内容才铺得到导航栏后面。 -->
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
             <!-- 阶段 AI（四轮审计修复） B1/B7：windowBackground 改指向 splash_bg，
              values-night 下自动取深色，深色冷启动不再闪白；
              导航栏透明时露出的也是同一份底色，而不是硬编码白。

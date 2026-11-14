@@ -107,8 +107,21 @@ public class MainActivity extends Activity {
          * 「加载特别慢」有一部分就出在这儿。 */
         Http.warmUp();
 
+        /* 底部沉浸：让内容铺到导航栏下面，手势小胶囊落在页面自己的背景上，
+         * 而不是压一条系统底色。导航栏透明、并关掉 Q 起默认加的那层对比遮罩，
+         * 否则透明导航栏会显出一条割裂的色带。
+         * 注：上游阶段 AI 曾担心动 LAYOUT_HIDE_NAVIGATION 会影响阶段 AD 的键盘
+         * 修复与 AG 的折叠屏分栏；本 fork 按需启用，键盘补偿仍由前端 kb 变量
+         * 与 adjustPan 完成。 */
         getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            getWindow().setNavigationBarContrastEnforced(false);
+            getWindow().setStatusBarContrastEnforced(false);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             WindowManager.LayoutParams lp = getWindow().getAttributes();
             lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
